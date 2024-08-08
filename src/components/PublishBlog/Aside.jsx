@@ -5,23 +5,32 @@ import { X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-function Aside() {
+function Aside({ sendTags }) {
   const [tags, setTags] = useState([]);
+
+  function formatTag(tag) {
+    return tag.replace(/\s+/g, "").toLowerCase(); // Remove spaces and convert to lowercase
+  }
 
   function addTags(event) {
     if (event.key === "Enter" && event.target.value.trim() !== "") {
+      const formattedTag = formatTag(event.target.value.trim());
       if (tags.length >= 3) {
         toast.error("You can add up to 3 tags only.");
+      } else if (tags.includes(formattedTag)) {
+        toast.error("Tag already exists.");
       } else {
-        setTags([...tags, event.target.value.trim()]);
-        // sendTags(tags)
+        setTags([...tags, formattedTag]);
+        sendTags([...tags, formattedTag]);
       }
       event.target.value = "";
     }
   }
 
   function removeTag(indexToRemove) {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
+    const updatedTags = tags.filter((_, index) => index !== indexToRemove);
+    setTags(updatedTags);
+    sendTags(updatedTags); // Send the updated tags back to the parent component
   }
 
   return (

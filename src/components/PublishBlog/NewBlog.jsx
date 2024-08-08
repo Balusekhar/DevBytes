@@ -7,12 +7,12 @@ import Aside from "./Aside";
 function NewBlog() {
   const [title, setTitle] = useState("");
   const [blog, setBlog] = useState("");
-  // const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]);
 
   function publishBlog() {
     console.log("Title:", title);
     console.log("Blog Content:", blog);
-    // console.log("Tags:", tags);
+    console.log("Tags:", tags);
   }
 
   return (
@@ -35,7 +35,7 @@ function NewBlog() {
         </div>
         <div className="w-[30%]">
             <Aside 
-            // sendTags={setTags}
+            sendTags={setTags}
             />
         </div>
       </div>
