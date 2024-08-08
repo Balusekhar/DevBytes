@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import RichTextEditor from "./RichTextEditor";
+import Aside from "./Aside";
 
 function NewBlog() {
   const [title, setTitle] = useState("");
   const [blog, setBlog] = useState("");
+  // const [tags, setTags] = useState([]);
 
   function publishBlog() {
     console.log("Title:", title);
     console.log("Blog Content:", blog);
+    // console.log("Tags:", tags);
   }
 
   return (
@@ -30,7 +33,11 @@ function NewBlog() {
             <RichTextEditor setBlogContent={setBlog} />
           </div>
         </div>
-        <div className="w-[30%]">aside components</div>
+        <div className="w-[30%]">
+            <Aside 
+            // sendTags={setTags}
+            />
+        </div>
       </div>
     </div>
   );
