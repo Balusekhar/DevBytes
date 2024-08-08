@@ -1,11 +1,27 @@
 import React from "react";
 import { PenLine, LogOut } from "lucide-react";
 import logo from "../../assets/logo.png";
-import { Button } from "@/components/ui/button"; // Adjust the path according to your project structure
+import { Button } from "@/components/ui/button";
+import { account } from "@/Appwrite/config";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
+  async function logout() {
+    try {
+      const result = await account.deleteSession("current");
+      toast("Logout Succesfull");
+      navigate("/");
+      console.log(result);
+    } catch (error) {
+      toast(error);
+    }
+  }
+
   return (
-    <div className="relative pt-6 w-full bg-white">
+    <div className="relative mb-8 pt-6 w-full bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <div className="inline-flex items-center space-x-2">
           <span>
@@ -18,11 +34,18 @@ function Header() {
             type="text"
             placeholder="Search"
           />
-          <Button size="default" className="inline-flex px-6 items-center justify-center text-white">
+          <Button
+            size="default"
+            className="inline-flex px-6 items-center justify-center text-white"
+          >
             <PenLine className="mr-2" />
             Write
           </Button>
-          <Button size="default" className="inline-flex px-6 items-center justify-center bg-black hover:bg-slate-800 text-white">
+          <Button
+            size="default"
+            onClick={logout}
+            className="inline-flex px-6 items-center justify-center bg-black hover:bg-slate-800 text-white"
+          >
             {/* <LogOut className="mr-2" /> */}
             Logout
           </Button>
