@@ -1,4 +1,4 @@
-import { Client, Account } from "appwrite";
+import { Client, Account, Databases, Storage } from "appwrite";
 
 export const client = new Client();
 
@@ -8,11 +8,14 @@ client
 
 export async function checkAuth() {
   try {
-    await account.get();
+    const user = await account.get();
+    // console.log(user)
     return true;
   } catch (error) {
     return false;
   }
 }
 export const account = new Account(client);
+export const databases = new Databases(client);
+export const storage = new Storage(client);
 export { ID } from "appwrite";

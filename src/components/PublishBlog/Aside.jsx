@@ -2,11 +2,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { toast } from "sonner";
 
-function Aside({ sendTags }) {
+function Aside({ sendTags, sendImage }) {
   const [tags, setTags] = useState([]);
+  const [image, setImage] = useState(null);
+  const fileInputRef = useRef(null);
 
   function formatTag(tag) {
     return tag.replace(/\s+/g, "").toLowerCase(); // Remove spaces and convert to lowercase
@@ -31,6 +33,26 @@ function Aside({ sendTags }) {
     const updatedTags = tags.filter((_, index) => index !== indexToRemove);
     setTags(updatedTags);
     sendTags(updatedTags); // Send the updated tags back to the parent component
+  }
+
+  function handleImage(e) {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please upload a valid image file.");
+        return;
+      }
+      setImage(file);
+      sendImage(file);
+    }
+  }
+
+  function removeImage() {
+    setImage(null);
+    sendImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 
   return (
@@ -59,7 +81,24 @@ function Aside({ sendTags }) {
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="picture">Picture</Label>
-        <Input id="picture" type="file" />
+        <div className="flex items-center">
+          <Input
+            id="picture"
+            type="file"
+            accept="image/*"
+            onChange={handleImage}
+            className="flex-grow"
+            ref={fileInputRef}
+          />
+          {image && (
+            <span
+              className="ml-2 cursor-pointer text-rose-800"
+              onClick={removeImage}
+            >
+              <X className="h-6 w-6" />
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
