@@ -1,8 +1,10 @@
 import React from "react";
 import logo from "../../assets/logo.png";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { account, ID } from "@/Appwrite/config";
+import { toast } from "sonner";
 
 function Login() {
   const {
@@ -10,10 +12,21 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data);
+    login(data.email, data.password);
   };
+
+  async function login(email, password) {
+    try {
+      await account.createEmailPasswordSession(email, password);
+      toast("User Login Successfully");
+      navigate("/feed");
+    } catch (error) {
+      toast("Failed to Login");
+    }
+  }
 
   return (
     <section>

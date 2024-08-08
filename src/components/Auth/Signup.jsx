@@ -3,6 +3,8 @@ import logo from "../../assets/logo.png";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { account, ID } from "@/Appwrite/config";
+import { toast } from "sonner";
 
 function SignUp() {
   const {
@@ -12,8 +14,19 @@ function SignUp() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    signup(data.email, data.password, data.name);
   };
+
+  async function signup(email, password, fullName) {
+    try {
+      await account.create(ID.unique(), email, password, fullName);
+      toast("Account created successfully");
+      navigate("/login");
+    } catch (error) {
+      toast("Failed to create Account");
+      console.log(error);
+    }
+  }
 
   return (
     <section>
@@ -122,6 +135,7 @@ function SignUp() {
               </div>
               <div>
                 <button
+                  //   onClick={signup}
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
