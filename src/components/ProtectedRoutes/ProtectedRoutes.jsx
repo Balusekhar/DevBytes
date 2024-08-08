@@ -13,7 +13,7 @@ function ProtectedRoutes() {
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
-        navigate("/login");
+        navigate("/");
         toast("You must login first");
       }
     };

@@ -16,7 +16,7 @@ function Header() {
       const result = await account.deleteSession("current");
       toast("Logout Succesfull");
       navigate("/");
-      console.log(result);
+      console.log("result", result);
     } catch (error) {
       toast(error);
     } finally {

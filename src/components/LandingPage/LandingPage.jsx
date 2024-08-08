@@ -5,16 +5,15 @@ import { checkAuth } from "@/Appwrite/config";
 import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-  
   useEffect(() => {
     const authenticate = async () => {
       const isAuth = await checkAuth();
       if (isAuth) {
         navigate("/feed");
       } else {
-        navigate("/login");
+        navigate("/");
       }
     };
 
