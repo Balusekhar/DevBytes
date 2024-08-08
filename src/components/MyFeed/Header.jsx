@@ -4,7 +4,7 @@ import logo from "../../assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { account } from "@/Appwrite/config";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
   const [loading, setLoading] = useState(false);
@@ -38,13 +38,15 @@ function Header() {
             type="text"
             placeholder="Search"
           />
-          <Button
-            size="default"
-            className="inline-flex px-6 items-center justify-center text-white"
-          >
-            <PenLine className="mr-2" />
-            Write
-          </Button>
+          <Link to="/new">
+            <Button
+              size="default"
+              className="inline-flex px-6 items-center justify-center text-white"
+            >
+              <PenLine className="mr-2" />
+              Write
+            </Button>
+          </Link>
           <Button
             size="default"
             onClick={logout}

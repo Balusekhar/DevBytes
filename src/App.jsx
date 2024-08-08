@@ -5,6 +5,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import { Toaster } from "@/components/ui/sonner";
 import Feed from "./components/MyFeed/Feed";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
+import NewBlog from "./components/PublishBlog/NewBlog";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/feed" element={<Feed />} />
+          <Route path="/new" element={<NewBlog />} />
         </Route>
       </Routes>
       <Toaster />
