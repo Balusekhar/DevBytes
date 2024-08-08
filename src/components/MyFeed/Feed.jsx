@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
+import Header from "./Header";
 
 function Feed() {
-  return (
-    <div>Feed</div>
-  )
+  return <div>
+    <Header/>
+  </div>;
 }
 
-export default Feed
+export default Feed;
