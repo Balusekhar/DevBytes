@@ -1,11 +1,27 @@
-import { account } from "@/Appwrite/config";
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { checkAuth } from "@/Appwrite/config";
+import React, { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function ProtectedRoutes() {
-  const isAuthenticated = account.get();
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  useEffect(() => {
+    const authenticate = async () => {
+      const isAuth = await checkAuth();
+      if (isAuth) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        navigate("/login");
+        toast("You must login first");
+      }
+    };
 
-  return isAuthenticated ? <Outlet/> : <Navigate to="/login" />;
+    authenticate();
+  }, [navigate]);
+
+  return isAuthenticated && <Outlet />;
 }
 
 export default ProtectedRoutes;

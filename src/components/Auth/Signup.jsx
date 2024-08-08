@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowRight, LoaderCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { account, ID } from "@/Appwrite/config";
+import { account, checkAuth, ID } from "@/Appwrite/config";
 import { toast } from "sonner";
 
 function SignUp() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -19,14 +22,30 @@ function SignUp() {
 
   async function signup(email, password, fullName) {
     try {
+      setLoading(true);
       await account.create(ID.unique(), email, password, fullName);
       toast("Account created successfully");
       navigate("/login");
     } catch (error) {
       toast("Failed to create Account");
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const authenticate = async () => {
+      const isAuth = await checkAuth();
+      if (isAuth) {
+        navigate("/feed");
+      } else {
+        navigate("/signup");
+      }
+    };
+
+    authenticate();
+  }, [navigate]);
 
   return (
     <section>
@@ -139,6 +158,7 @@ function SignUp() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
+                  {loading && <LoaderCircle className="mr-2 animate-spin" />}
                   Create Account <ArrowRight className="ml-2" size={16} />
                 </button>
               </div>

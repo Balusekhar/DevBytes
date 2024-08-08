@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { account, ID } from "@/Appwrite/config";
+import { account, checkAuth, ID } from "@/Appwrite/config";
 import { toast } from "sonner";
 
 function Login() {
@@ -18,15 +18,34 @@ function Login() {
     login(data.email, data.password);
   };
 
+  const [loading, setLoading] = useState(false);
+
   async function login(email, password) {
     try {
+      setLoading(true);
       await account.createEmailPasswordSession(email, password);
       toast("User Login Successfully");
       navigate("/feed");
     } catch (error) {
+      // setLoading(false)
       toast("Failed to Login");
+    } finally {
+      setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const authenticate = async () => {
+      const isAuth = await checkAuth();
+      if (isAuth) { 
+        navigate("/feed");
+      } else {
+        navigate("/login");
+      }
+    };
+
+    authenticate();
+  }, [navigate]);
 
   return (
     <section>
@@ -115,6 +134,7 @@ function Login() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
+                  {loading && <LoaderCircle className="mr-2 animate-spin" />}
                   Sign In <ArrowRight className="ml-2" size={16} />
                 </button>
               </div>

@@ -1,5 +1,5 @@
-import React from "react";
-import { PenLine, LogOut } from "lucide-react";
+import React, { useState } from "react";
+import { PenLine, LoaderCircle } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { account } from "@/Appwrite/config";
@@ -7,16 +7,20 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function logout() {
     try {
+      setLoading(true);
       const result = await account.deleteSession("current");
       toast("Logout Succesfull");
       navigate("/");
       console.log(result);
     } catch (error) {
       toast(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -46,7 +50,7 @@ function Header() {
             onClick={logout}
             className="inline-flex px-6 items-center justify-center bg-black hover:bg-slate-800 text-white"
           >
-            {/* <LogOut className="mr-2" /> */}
+            {loading && <LoaderCircle className="mr-2 animate-spin" />}
             Logout
           </Button>
         </div>
