@@ -33,14 +33,17 @@ function NewBlog() {
 
   async function publishBlog() {
     setLoading(true);
-    let documentId = null; 
+    let documentId = null;
     try {
+      const slug = generateSlug(title);
+
       const blogDetails = {
         title,
         content: blog,
         author: String(userId),
-        imageUrl: null, 
+        imageUrl: null,
         tags,
+        slug,
       };
 
       // First, save the blog post to the database without the image
@@ -79,6 +82,13 @@ function NewBlog() {
     }
   }
 
+  function generateSlug(title) {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+  }
+
   async function uploadFile(image) {
     const result = await storage.createFile(
       import.meta.env.VITE_APPWRITE_BUCKETID, // bucketId
@@ -103,7 +113,7 @@ function NewBlog() {
         <h1 className="text-4xl font-roboto font-medium">
           Write your Blog Here:
         </h1>
-        <Button onClick={publishBlog}>
+        <Button onClick={publishBlog}> 
           {loading ? <LoaderCircle className="animate-spin" /> : "Publish"}
         </Button>
       </div>
@@ -112,7 +122,7 @@ function NewBlog() {
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full h-14 p-4 text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+            className="w-full h-14 p-4 mt-2 text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
             placeholder="Add a Title"
           />
           <div className="flex-1 overflow-y-auto mb-4">
