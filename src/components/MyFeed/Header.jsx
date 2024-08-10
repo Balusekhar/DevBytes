@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { PenLine, LoaderCircle } from "lucide-react";
+import { PenLine, LoaderCircle, User } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { account } from "@/Appwrite/config";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function Header() {
   const [loading, setLoading] = useState(false);
@@ -13,16 +19,19 @@ function Header() {
   async function logout() {
     try {
       setLoading(true);
-      const result = await account.deleteSession("current");
-      toast("Logout Succesfull");
+      await account.deleteSession("current");
+      toast("Logout Successful");
       navigate("/");
-      console.log("result", result);
     } catch (error) {
-      toast(error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
   }
+
+  const handleProfile = () => {
+    navigate("/profile");
+  };
 
   return (
     <div className="relative mb-8 pt-6 w-full bg-white">
@@ -47,14 +56,26 @@ function Header() {
               Write
             </Button>
           </Link>
-          <Button
-            size="default"
-            onClick={logout}
-            className="inline-flex px-6 items-center justify-center bg-black hover:bg-slate-800 text-white"
-          >
-            {loading && <LoaderCircle className="mr-2 animate-spin" />}
-            Logout
-          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="relative inline-flex items-center justify-center rounded-full bg-gray-200 p-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                <User className="w-6 h-6 text-gray-700" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleProfile}>
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>
+                {loading ? (
+                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Logout"
+                )}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import Feed from "./components/MyFeed/Feed";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import NewBlog from "./components/PublishBlog/NewBlog";
 import DisplayBlog from "./components/DisplayBlog/DisplayBlog";
+import Profile from "./components/Profile/Profile";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/feed" element={<Feed />} />
           <Route path="/new" element={<NewBlog />} />
           <Route path="/:id/:slug" element={<DisplayBlog />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
       <Toaster />
