@@ -7,6 +7,7 @@ import { ID } from "appwrite";
 import { toast } from "sonner";
 import { account, databases, storage } from "@/Appwrite/config";
 import { LoaderCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function NewBlog() {
   const [title, setTitle] = useState("");
@@ -15,6 +16,8 @@ function NewBlog() {
   const [tags, setTags] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   async function getUserId() {
     try {
@@ -67,6 +70,7 @@ function NewBlog() {
       }
 
       toast.success("Blog published successfully");
+      navigate("/feed");
     } catch (error) {
       if (documentId) {
         await databases.deleteDocument(
@@ -113,7 +117,7 @@ function NewBlog() {
         <h1 className="text-4xl font-roboto font-medium">
           Write your Blog Here:
         </h1>
-        <Button onClick={publishBlog}> 
+        <Button onClick={publishBlog}>
           {loading ? <LoaderCircle className="animate-spin" /> : "Publish"}
         </Button>
       </div>

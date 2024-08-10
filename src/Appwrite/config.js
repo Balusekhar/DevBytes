@@ -9,7 +9,7 @@ client
 export async function checkAuth() {
   try {
     const user = await account.get();
-    // console.log(user)
+    console.log(user)
     return true;
   } catch (error) {
     return false;
