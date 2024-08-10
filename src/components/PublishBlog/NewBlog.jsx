@@ -13,25 +13,29 @@ function NewBlog() {
   const [title, setTitle] = useState("");
   const [blog, setBlog] = useState("");
   const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
   const [tags, setTags] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  async function getUserId() {
+  async function getUserIdAndName() {
     try {
       const user = await account.get();
       const userId = user.$id;
+      const userName = user.name;
+      console.log("username", userName);
       console.log("User ID:", userId);
       setUserId(userId); // Set the userId state here
+      setUserName(userName); // Set the userId state here
     } catch (error) {
       console.error("Failed to get user ID", error);
     }
   }
 
   useEffect(() => {
-    getUserId();
+    getUserIdAndName();
   }, []);
 
   async function publishBlog() {
@@ -47,6 +51,7 @@ function NewBlog() {
         imageUrl: null,
         tags,
         slug,
+        userName,
       };
 
       // First, save the blog post to the database without the image

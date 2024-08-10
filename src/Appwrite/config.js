@@ -8,7 +8,7 @@ client
 
 export async function checkAuth() {
   try {
-    const user = await account.get();
+    await account.get();
     // console.log(user)
     return true;
   } catch (error) {
@@ -16,6 +16,7 @@ export async function checkAuth() {
   }
 }
 export const account = new Account(client);
+// export const users = new Users(account);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
 export { ID } from "appwrite";

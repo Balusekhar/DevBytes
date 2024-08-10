@@ -10,6 +10,7 @@ function LandingPage() {
   useEffect(() => {
     const authenticate = async () => {
       const isAuth = await checkAuth();
+      console.log("Auth status:",isAuth)
       if (isAuth) {
         navigate("/feed");
       } else {

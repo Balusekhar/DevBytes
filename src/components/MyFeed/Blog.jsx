@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 function Blog({ blog }) {
   const [image, setImage] = useState(null);
-  const [userName, setUserName] = useState(null);
   const [createdAt, setCreatedAt] = useState("");
 
   useEffect(() => {
@@ -24,22 +23,7 @@ function Blog({ blog }) {
       }
     }
 
-    async function checkAuth() {
-      try {
-        const user = await account.get();
-        return user;
-      } catch (error) {
-        return false;
-      }
-    }
-
     listImage();
-
-    checkAuth().then((user) => {
-      if (user) {
-        setUserName(user.name);
-      }
-    });
 
     const formattedDate = format(new Date(blog.$createdAt), "MMMM dd, yyyy");
     setCreatedAt(formattedDate);
@@ -83,7 +67,7 @@ function Blog({ blog }) {
         <div className="mt-3 flex items-center space-x-2">
           <span className="flex flex-col">
             <span className="text-[14px] font-medium text-gray-900">
-              Written by: <span className="font-semibold">{userName}</span>
+              Written by: <span className="font-semibold">{blog.userName}</span>
             </span>
             <span className="text-[12px] text-gray-500">
               Created on: {createdAt}
