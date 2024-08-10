@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Feed from "./components/MyFeed/Feed";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import NewBlog from "./components/PublishBlog/NewBlog";
+import DisplayBlog from "./components/DisplayBlog/DisplayBlog";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/feed" element={<Feed />} />
           <Route path="/new" element={<NewBlog />} />
+          <Route path="/:id/:slug" element={<DisplayBlog />} />
         </Route>
       </Routes>
       <Toaster />

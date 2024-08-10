@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { storage, account } from "@/Appwrite/config";
 import { format } from "date-fns";
 import parse from "html-react-parser";
+import { useNavigate } from "react-router-dom";
 
 function Blog({ blog }) {
   const [image, setImage] = useState(null);
@@ -44,8 +45,17 @@ function Blog({ blog }) {
     setCreatedAt(formattedDate);
   }, [blog.$createdAt]);
 
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate(`/${blog.$id}/${blog.slug}`);
+  };
+
   return (
-    <div className="flex m-4 w-full flex-col items-center rounded-md border md:flex-row bg-white shadow-lg">
+    <div
+      className="flex m-4 w-full flex-col cursor-pointer items-center rounded-md border md:flex-row bg-white shadow-lg"
+      onClick={handleNavigation}
+    >
       <div className="h-[200px] w-full md:w-[300px] flex-shrink-0">
         <img
           src={image}
@@ -57,9 +67,9 @@ function Blog({ blog }) {
         <h1 className="inline-flex items-center text-lg font-semibold">
           {blog.title} <ArrowUpRight className="ml-2 h-4 w-4" />
         </h1>
-        <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+        <div className="mt-2 text-sm text-gray-600 line-clamp-2">
           {parse(blog.content)}
-        </p>
+        </div>
         <div className="mt-4">
           {blog.tags?.map((tag, index) => (
             <span

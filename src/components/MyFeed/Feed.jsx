@@ -29,7 +29,9 @@ function Feed() {
     <div>
       <Header />
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col justify-center items-start">
+        <div
+          className="flex flex-col justify-center items-start"
+        >
           {userBlogs.map((blog) => {
             return <Blog key={blog.$id} blog={blog} />;
           })}
