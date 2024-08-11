@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { account, checkAuth, ID } from "@/Appwrite/config";
+import { account, checkAuth } from "@/Appwrite/config";
 import { toast } from "sonner";
 
 function Login() {
@@ -13,21 +13,19 @@ function Login() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data) => {
     login(data.email, data.password);
   };
-
-  const [loading, setLoading] = useState(false);
 
   async function login(email, password) {
     try {
       setLoading(true);
       await account.createEmailPasswordSession(email, password);
       toast("User Login Successfully");
-      navigate("/feed");
+      navigate("/feed", { replace: true }); // Use replace to avoid stacking history
     } catch (error) {
-      // setLoading(false)
       toast("Failed to Login");
     } finally {
       setLoading(false);
@@ -37,15 +35,13 @@ function Login() {
   useEffect(() => {
     const authenticate = async () => {
       const isAuth = await checkAuth();
-      if (isAuth) { 
-        navigate("/feed");
-      } else {
-        navigate("/login");
+      if (isAuth) {
+        navigate("/feed", { replace: true }); // Use replace to avoid stacking history
       }
     };
 
     authenticate();
-  }, [navigate]);
+  }, []);
 
   return (
     <section>

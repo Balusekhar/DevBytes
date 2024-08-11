@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-function RichTextEditor({ setBlogContent }) {
+function RichTextEditor({ setBlogContent, blogDetails }) {
   const [blog, setBlog] = useState("");
+
+  useEffect(() => {
+    // Initialize the blog state with existing content when editing
+    if (blogDetails && blogDetails.content) {
+      setBlog(blogDetails.content);
+    }
+  }, [blogDetails]);
 
   function handleBlogChange(content) {
     setBlog(content);

@@ -1,6 +1,6 @@
 import { storage } from "@/Appwrite/config";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,10 +8,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
 
-function ProfileBlog({ blog, onDelete, onEdit }) {
+function ProfileBlog({ blog }) {
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function listImage() {
@@ -31,11 +31,11 @@ function ProfileBlog({ blog, onDelete, onEdit }) {
   }, []);
 
   const handleDelete = () => {
-    onDelete(blog.$id);
+    // onDelete(blog.$id);
   };
 
   const handleEdit = () => {
-    onEdit(blog.$id);
+    navigate(`/${blog.$id}/edit`);
   };
 
   return (

@@ -2,13 +2,36 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
+import { storage } from "@/Appwrite/config";
 
-function Aside({ sendTags, sendImage }) {
+function Aside({ sendTags, sendImage, blogDetails }) {
   const [tags, setTags] = useState([]);
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null); // State for image preview
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (blogDetails) {
+      setTags(blogDetails.tags);
+
+      // Check if there's an existing image in blogDetails and set the preview
+      if (blogDetails.imageUrl) {
+        const existingImageUrl = getImageUrl(blogDetails.imageUrl); // Function to get image URL from storage
+        setImagePreview(existingImageUrl);
+        console.log(imagePreview)
+        // fileInputRef.current.value = existingImageUrl;
+      }
+    }
+  }, [blogDetails]);
+
+  function getImageUrl(imageId) {
+    return storage.getFilePreview(
+      import.meta.env.VITE_APPWRITE_BUCKETID, // bucketId
+      imageId
+    ).href;
+  }
 
   function formatTag(tag) {
     return tag.replace(/\s+/g, "").toLowerCase(); // Remove spaces and convert to lowercase
@@ -44,11 +67,15 @@ function Aside({ sendTags, sendImage }) {
       }
       setImage(file);
       sendImage(file);
+
+      // Create a preview URL for the image
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
     }
   }
-
   function removeImage() {
     setImage(null);
+    setImagePreview(null);
     sendImage(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -99,9 +126,28 @@ function Aside({ sendTags, sendImage }) {
             </span>
           )}
         </div>
+        {/* Display the image preview or existing image */}
+        {imagePreview && (
+          <div className="mt-4">
+            <img
+              src={imagePreview}
+              alt="Selected"
+              className="w-full h-auto rounded-md"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default Aside;
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@ import { ID } from "appwrite";
 import { toast } from "sonner";
 import { account, databases, storage } from "@/Appwrite/config";
 import { LoaderCircle } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function NewBlog() {
   const [title, setTitle] = useState("");
@@ -17,16 +17,45 @@ function NewBlog() {
   const [tags, setTags] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [blogDetails, setBlogDetails] = useState(null);
 
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      getBlogDetails(id);
+    }
+  }, [id]);
+
+  async function getBlogDetails(id) {
+    try {
+      const result = await databases.getDocument(
+        import.meta.env.VITE_APPWRITE_DATABASEID,
+        import.meta.env.VITE_APPWRITE_COLLECTIONID,
+        id // documentId
+      );
+      setBlogDetails(result);
+      setTitle(result.title);
+      setBlog(result.content);
+      setTags(result.tags || []);
+      if (result.imageUrl) {
+        const file = await storage.getFilePreview(
+          import.meta.env.VITE_APPWRITE_BUCKETID,
+          result.imageUrl
+        );
+        setImage(file.href); // Set the image URL for preview
+      }
+    } catch (error) {
+      toast.error("Failed to load blog details");
+    }
+  }
 
   async function getUserIdAndName() {
     try {
       const user = await account.get();
       const userId = user.$id;
       const userName = user.name;
-      console.log("username", userName);
-      console.log("User ID:", userId);
       setUserId(userId); // Set the userId state here
       setUserName(userName); // Set the userId state here
     } catch (error) {
@@ -54,14 +83,25 @@ function NewBlog() {
         userName,
       };
 
-      // First, save the blog post to the database without the image
-      const savedBlog = await saveBlogPost(blogDetails);
-      documentId = savedBlog.$id; // Store the document ID
+      // If in edit mode (id is present), update the existing blog
+      if (id) {
+        await databases.updateDocument(
+          import.meta.env.VITE_APPWRITE_DATABASEID,
+          import.meta.env.VITE_APPWRITE_COLLECTIONID,
+          id,
+          blogDetails
+        );
+        documentId = id;
+      } else {
+        // Otherwise, create a new blog post
+        const savedBlog = await saveBlogPost(blogDetails);
+        documentId = savedBlog.$id; // Store the document ID
+      }
 
       console.log("Blog Details:", blogDetails);
 
       // If there is an image, proceed to upload it
-      if (image) {
+      if (image && typeof image !== "string") {
         const result = await uploadFile(image);
         const imageId = result.$id;
 
@@ -77,13 +117,6 @@ function NewBlog() {
       toast.success("Blog published successfully");
       navigate("/feed");
     } catch (error) {
-      if (documentId) {
-        await databases.deleteDocument(
-          import.meta.env.VITE_APPWRITE_DATABASEID,
-          import.meta.env.VITE_APPWRITE_COLLECTIONID,
-          documentId
-        );
-      }
       toast.error("Failed to publish blog");
       console.error(error);
     } finally {
@@ -120,7 +153,7 @@ function NewBlog() {
     <div className="w-screen h-screen flex flex-col">
       <div className="flex justify-between pt-8 pb-6 px-16">
         <h1 className="text-4xl font-roboto font-medium">
-          Write your Blog Here:
+          {id ? "Edit your Blog Here:" : "Write your Blog Here:"}
         </h1>
         <Button onClick={publishBlog}>
           {loading ? <LoaderCircle className="animate-spin" /> : "Publish"}
@@ -135,11 +168,19 @@ function NewBlog() {
             placeholder="Add a Title"
           />
           <div className="flex-1 overflow-y-auto mb-4">
-            <RichTextEditor setBlogContent={setBlog} />
+            <RichTextEditor
+              blogDetails={blogDetails}
+              setBlogContent={setBlog}
+            />
           </div>
         </div>
         <div className="w-[30%]">
-          <Aside sendTags={setTags} sendImage={setImage} />
+          <Aside
+            blogDetails={blogDetails}
+            sendTags={setTags}
+            sendImage={setImage}
+            initialImage={image} // Pass the image preview URL to Aside component
+          />
         </div>
       </div>
     </div>

@@ -15,8 +15,6 @@ function Profile() {
         const user = await account.get();
         const userId = user.$id;
         const userName = user.name;
-        console.log("username", userName);
-        console.log("User ID:", userId);
         setUserId(userId); // Set the userId state here
         setUserName(userName); // Set the userName state here
 

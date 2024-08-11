@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 function SignUp() {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     register,
@@ -25,7 +25,7 @@ function SignUp() {
       setLoading(true);
       await account.create(ID.unique(), email, password, fullName);
       toast("Account created successfully");
-      navigate("/login");
+      navigate("/login", { replace: true }); // Replace instead of pushing new entry
     } catch (error) {
       toast("Failed to create Account");
       console.log(error);
@@ -38,14 +38,12 @@ function SignUp() {
     const authenticate = async () => {
       const isAuth = await checkAuth();
       if (isAuth) {
-        navigate("/feed");
-      } else {
-        navigate("/signup");
+        navigate("/feed", { replace: true }); // Replace instead of pushing new entry
       }
     };
 
     authenticate();
-  }, [navigate]);
+  }, []);
 
   return (
     <section>
@@ -55,7 +53,7 @@ function SignUp() {
             <img className="h-10" src={logo} alt="logo" />
           </div>
           <h2 className="text-center text-2xl font-bold leading-tight text-black">
-            Sign up to create account
+            Sign up to create an account
           </h2>
           <p className="mt-2 text-center text-base text-gray-600">
             Already have an account?{" "}
@@ -154,7 +152,6 @@ function SignUp() {
               </div>
               <div>
                 <button
-                  //   onClick={signup}
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >

@@ -1,24 +1,30 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { StickyNote } from "lucide-react";
+import logo from "../../assets/logo.png";
+import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Link } from "react-router-dom";
 
 function Hero() {
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center items-center text-center p-6 bg-white">
-      <h1 className="noto-serif text-6xl lg:text-7xl mb-6">
-        Effortless Publishing
-      </h1>
-      <p className="roboto-thin text-xl lg:text-2xl mb-6 text-[#52525b] max-w-2xl mx-auto">
-        AI-assisted blogging for developers and teams. Draft to published in
-        minutes.
-      </p>
-      <Link to="/login">
-        <Button size="lg" className="flex justify-center items-center">
-          <StickyNote className="mr-2" />
-          Start a Blog
-        </Button>
-      </Link>
+    <div className="flex h-full flex-col justify-center items-center text-center p-6">
+      <div className="p-9 mb-8">
+        <div className="flex justify-center">
+          <img className="h-10" src={logo} alt="DevBytes logo" />
+        </div>
+        <h1 className="text-8xl p-4 font-medium lg:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-800 to-slate-600">
+          Where Developers Learn <br /> and Grow Together
+        </h1>
+        <p className="text-xl lg:text2xl mb-6 px-10 text-[#52525b] max-w-3xl mx-auto">
+          Join a community where coding knowledge meets shared experiences.
+          Explore, write, and connect with like-minded developers.
+        </p>
+        <Link to={"/login"} className="flex justify-center">
+          <ShimmerButton className="shadow-2xl">
+            <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
+              Start Writing
+            </span>
+          </ShimmerButton>
+        </Link>
+      </div>
     </div>
   );
 }

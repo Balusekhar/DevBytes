@@ -19,6 +19,7 @@ export default function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/feed" element={<Feed />} />
           <Route path="/new" element={<NewBlog />} />
+          <Route path="/:id/edit" element={<NewBlog />} />
           <Route path="/:id/:slug" element={<DisplayBlog />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
