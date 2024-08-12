@@ -40,7 +40,7 @@ function NewBlog() {
       setBlog(result.content);
       setTags(result.tags || []);
       if (result.imageUrl) {
-        const file = await storage.getFilePreview(
+        const file = storage.getFilePreview(
           import.meta.env.VITE_APPWRITE_BUCKETID,
           result.imageUrl
         );

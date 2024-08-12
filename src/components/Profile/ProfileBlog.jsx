@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-function ProfileBlog({ blog }) {
+function ProfileBlog({ blog, deleteBlog }) {
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
@@ -30,8 +30,13 @@ function ProfileBlog({ blog }) {
     listImage();
   }, []);
 
-  const handleDelete = () => {
-    // onDelete(blog.$id);
+  const handleDelete = async () => {
+    deleteBlog(blog.$id);
+    const result = await storage.deleteFile(
+      import.meta.env.VITE_APPWRITE_BUCKETID, // bucketId
+      blog.imageUrl // fileId
+    );
+    console.log("deleted from storage", result);
   };
 
   const handleEdit = () => {

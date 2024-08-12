@@ -20,8 +20,6 @@ function Aside({ sendTags, sendImage, blogDetails }) {
       if (blogDetails.imageUrl) {
         const existingImageUrl = getImageUrl(blogDetails.imageUrl); // Function to get image URL from storage
         setImagePreview(existingImageUrl);
-        console.log(imagePreview)
-        // fileInputRef.current.value = existingImageUrl;
       }
     }
   }, [blogDetails]);
@@ -73,6 +71,7 @@ function Aside({ sendTags, sendImage, blogDetails }) {
       setImagePreview(previewUrl);
     }
   }
+
   function removeImage() {
     setImage(null);
     setImagePreview(null);
@@ -142,12 +141,3 @@ function Aside({ sendTags, sendImage, blogDetails }) {
 }
 
 export default Aside;
-
-
-
-
-
-
-
-
-
