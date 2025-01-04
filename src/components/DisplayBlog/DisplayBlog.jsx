@@ -1,5 +1,5 @@
 import { databases, storage, account } from "@/Appwrite/config";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import parse from "html-react-parser";

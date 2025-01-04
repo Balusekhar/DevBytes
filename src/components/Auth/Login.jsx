@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ function Login() {
     };
 
     authenticate();
-  }, []);
+  }, [navigate]);
 
   return (
     <section>
@@ -54,11 +54,10 @@ function Login() {
             Sign In to your account
           </h2>
           <p className="mt-2 text-center text-base text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               to="/signup"
-              className="font-medium text-black transition-all duration-200 hover:underline"
-            >
+              className="font-medium text-black transition-all duration-200 hover:underline">
               Sign Up
             </Link>
           </p>
@@ -67,8 +66,7 @@ function Login() {
               <div>
                 <label
                   htmlFor="email"
-                  className="text-base font-medium text-gray-900"
-                >
+                  className="text-base font-medium text-gray-900">
                   {" "}
                   Email address{" "}
                 </label>
@@ -98,8 +96,7 @@ function Login() {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="text-base font-medium text-gray-900"
-                  >
+                    className="text-base font-medium text-gray-900">
                     {" "}
                     Password{" "}
                   </label>
@@ -128,8 +125,7 @@ function Login() {
               <div>
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-                >
+                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80">
                   {loading && <LoaderCircle className="mr-2 animate-spin" />}
                   Sign In <ArrowRight className="ml-2" size={16} />
                 </button>

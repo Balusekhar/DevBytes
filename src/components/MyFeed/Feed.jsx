@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import Blog from "./Blog";
 import { databases } from "@/Appwrite/config";

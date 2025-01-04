@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { PenLine, LoaderCircle, User } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { Button } from "@/components/ui/button";

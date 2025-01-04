@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { storage, account } from "@/Appwrite/config";
+import { storage } from "@/Appwrite/config";
 import { format } from "date-fns";
 import parse from "html-react-parser";
 import { useNavigate } from "react-router-dom";

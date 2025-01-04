@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { databases, account } from "@/Appwrite/config";
 import { toast } from "sonner";
 import ProfileBlog from "./ProfileBlog";

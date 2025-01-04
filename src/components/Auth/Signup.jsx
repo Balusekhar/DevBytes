@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ function SignUp() {
     };
 
     authenticate();
-  }, []);
+  }, [navigate]);
 
   return (
     <section>

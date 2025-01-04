@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../../assets/logo.png";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Link } from "react-router-dom";
