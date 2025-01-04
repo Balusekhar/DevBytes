@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindTypography from "@tailwindcss/typography";
+
 export const darkMode = ["class"];
 export const content = [
   "./pages/**/*.{js,jsx}",
@@ -97,4 +100,4 @@ export const theme = {
     },
   },
 };
-export const plugins = [require("tailwindcss-animate"), require("@tailwindcss/typography")];
+export const plugins = [tailwindcssAnimate, tailwindTypography];
